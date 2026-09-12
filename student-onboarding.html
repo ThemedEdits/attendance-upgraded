@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Complete your student profile and request access to your class attendance register." />
+  <meta name="theme-color" content="#1f5b4b" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Student Enrollment | Attendance Register" />
+  <meta property="og:description" content="Complete your student profile and request access to your class attendance register." />
+  <meta property="og:image" content="/web-app-manifest-512x512.png" />
+  <meta property="og:image:alt" content="Attendance Register app icon" />
+  <meta property="og:image:type" content="image/png" />
+  <meta property="og:image:width" content="512" />
+  <meta property="og:image:height" content="512" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Student Enrollment | Attendance Register" />
+  <meta name="twitter:description" content="Complete your student profile and request access to your class attendance register." />
+  <meta name="twitter:image" content="/web-app-manifest-512x512.png" />
+  <meta name="twitter:image:alt" content="Attendance Register app icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="Attendance Register" />
+  <link rel="manifest" href="/site.webmanifest" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <div class="app-header__brand">
+      <div class="brand-icon-sq" style="width:30px;height:30px;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M9 11l3 3L22 4"></path>
+          <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+        </svg>
+      </div>
+      <span>Attendance Register</span>
+    </div>
+    <div class="app-header__who onboarding-header-actions">
+      <span class="role-badge">Student setup</span>
+      <span class="user-email-text" id="user-email">Loading...</span>
+      <button class="btn-ghost" id="signout-btn" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main class="container onboarding-page">
+    <div class="page-header-row">
+      <div>
+        <div class="eyebrow-label">Student enrollment</div>
+        <h1 class="page-title">Join your class</h1>
+        <p class="page-sub" id="intro-copy">Complete your profile, choose your class, and send an access request to your CR or teacher.</p>
+      </div>
+    </div>
+
+    <div id="page-error" class="error-box" hidden></div>
+
+    <section class="onboarding-grid" id="setup-view">
+      <div class="panel onboarding-panel">
+        <div class="panel-head">
+          <div>
+            <h2><span class="panel-icon-wrap">1</span> Your details</h2>
+            <p>Your email is already linked to your Firebase account.</p>
+          </div>
+        </div>
+        <form id="enrollment-form" class="auth-form onboarding-form" novalidate>
+          <div class="field">
+            <label for="student-name">Full name</label>
+            <input id="student-name" type="text" autocomplete="name" maxlength="80" placeholder="e.g. Hammad Ahmed" required />
+          </div>
+          <div class="field">
+            <label for="seat-number">Seat number</label>
+            <input id="seat-number" type="text" maxlength="40" placeholder="e.g. 23122214" required />
+            <small class="field-help">Use the exact seat number assigned by your institution.</small>
+          </div>
+          <div class="security-callout">
+            <div class="security-callout__icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2.25m-6.364-8.864a6.364 6.364 0 1112.728 0V12a2.25 2.25 0 01-2.25 2.25H7.886A2.25 2.25 0 015.636 12V8.386z"/></svg>
+            </div>
+            <div><strong>Password protected</strong><span>Your password stays inside Firebase Authentication and is never saved in the Google Sheet.</span></div>
+          </div>
+        </form>
+      </div>
+
+      <div class="panel onboarding-panel">
+        <div class="panel-head">
+          <div>
+            <h2><span class="panel-icon-wrap">2</span> Choose your class</h2>
+            <p>You belong to one class, which contains all of your subjects.</p>
+          </div>
+        </div>
+        <div id="class-list" class="class-choice-list">
+          <div class="spinner-row"><span class="modern-spinner"></span><span>Loading available classes...</span></div>
+        </div>
+        <button class="btn btn-primary onboarding-submit" id="request-btn" type="submit" form="enrollment-form" disabled>Request class access</button>
+      </div>
+    </section>
+
+    <section class="panel pending-panel" id="pending-view" hidden>
+      <div class="pending-status-icon" id="pending-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2"/><circle cx="12" cy="12" r="9"/></svg>
+      </div>
+      <div>
+        <div class="eyebrow-label">Access request</div>
+        <h2 id="pending-title">Waiting for approval</h2>
+        <p id="pending-copy">Your request has been sent to the staff member responsible for this class.</p>
+        <div class="request-summary" id="request-summary"></div>
+        <div class="pending-actions">
+          <button class="btn btn-primary" id="refresh-status-btn" type="button">Check status</button>
+          <button class="btn btn-outline" id="change-request-btn" type="button" hidden>Request another class</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="toast-root" class="toast-container"></div>
+  <script type="module" src="js/student-onboarding.js"></script>
+</body>
+</html>
