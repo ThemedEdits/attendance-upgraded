@@ -525,8 +525,10 @@ a:hover {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  color: transparent; /* fallback for browsers that ignore the -webkit- prop */
+  color: transparent;
+  /* fallback for browsers that ignore the -webkit- prop */
 }
+
 .auth-hero__copy p {
   font-size: 1.05rem;
   line-height: 1.6;
@@ -1602,7 +1604,7 @@ main.container {
   margin-bottom: 1rem;
 }
 
-.auth-help-header > div:nth-child(2) {
+.auth-help-header>div:nth-child(2) {
   min-width: 0;
   flex: 1;
 }
@@ -1675,7 +1677,7 @@ main.container {
   padding-left: 1.25rem;
 }
 
-.auth-help-section li + li {
+.auth-help-section li+li {
   margin-top: 0.25rem;
 }
 
@@ -2781,6 +2783,7 @@ main.container {
     transition-duration: 0.01ms !important;
   }
 }
+
 /* =====================================================
    SELF ENROLLMENT + REQUEST REVIEW
 ===================================================== */
@@ -2793,7 +2796,7 @@ main.container {
   z-index: 0;
 }
 
-.auth-hero > * {
+.auth-hero>* {
   position: relative;
   z-index: 1;
 }
@@ -3107,7 +3110,7 @@ main.container {
   margin-top: 1.2rem;
 }
 
-.request-summary > div {
+.request-summary>div {
   padding: 0.8rem 0.9rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
@@ -3215,7 +3218,7 @@ main.container {
   margin-bottom: 0.08rem;
 }
 
-.enrollment-request-details > p {
+.enrollment-request-details>p {
   margin: 0;
   color: var(--text-muted);
   font-size: 0.8rem;

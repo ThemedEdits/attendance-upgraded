@@ -185,7 +185,7 @@ function setError(message) {
 
 function setLoading(isLoading) {
   submitBtn.disabled = isLoading;
-  submitBtn.innerHTML = isLoading 
+  submitBtn.innerHTML = isLoading
     ? `<span class="modern-spinner" style="width:16px;height:16px;border-width:2px;border-color:rgba(255,255,255,0.3);border-top-color:#fff;"></span> Please wait…`
     : (mode === "signin" ? "Sign in" : "Create account");
 }
