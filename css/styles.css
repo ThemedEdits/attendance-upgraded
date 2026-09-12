@@ -522,9 +522,11 @@ a:hover {
 
 .auth-hero__copy h1 .highlight-text {
   background: linear-gradient(135deg, #7fae9f 0%, #c4d9d1 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent; /* fallback for browsers that ignore the -webkit- prop */
 }
-
 .auth-hero__copy p {
   font-size: 1.05rem;
   line-height: 1.6;
