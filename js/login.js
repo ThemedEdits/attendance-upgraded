@@ -31,9 +31,142 @@ const passwordRules = document.getElementById("password-rules");
 const forgotRow = document.getElementById("forgot-row");
 const signupSecurityNote = document.getElementById("signup-security-note");
 const signinOnly = [...document.querySelectorAll(".signin-only")];
+const authHelpBtn = document.getElementById("auth-help-btn");
 
 let mode = "signin";
 let routing = false;
+
+function openHelpModal() {
+  const root = document.getElementById("modal-root");
+  if (!root || root.querySelector(".auth-help-backdrop")) return;
+
+  root.innerHTML = `
+    <div class="modern-modal-backdrop auth-help-backdrop is-active">
+      <section class="modern-modal-dialog auth-help-dialog is-active" role="dialog" aria-modal="true" aria-labelledby="auth-help-title">
+        <div class="modern-modal-header auth-help-header">
+          <div class="modal-icon-badge is-primary">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M9.75 9a2.25 2.25 0 1 1 3.72 1.7c-.8.66-1.47 1.08-1.47 2.3"></path>
+              <path d="M12 16.5h.01"></path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="modern-modal-title" id="auth-help-title">How Attendance Register works</h2>
+            <p class="auth-help-lead">A complete guide for students, teachers, and class representatives.</p>
+          </div>
+          <button type="button" class="auth-help-close" id="auth-help-close" aria-label="Close help dialog">×</button>
+        </div>
+
+        <div class="auth-help-content">
+          <section class="auth-help-section">
+            <h3>1. What this system does</h3>
+            <p>Attendance Register connects Firebase Authentication, Google Sheets, and this web interface. Students request access to a class, staff approve them, teachers record attendance, and students can view their own attendance history.</p>
+          </section>
+
+          <section class="auth-help-section">
+            <h3>2. Creating a student account</h3>
+            <ol>
+              <li>Choose <strong>Create account</strong> on this page.</li>
+              <li>Enter an email address you can access.</li>
+              <li>Create a password with at least 8 characters, including uppercase, lowercase, a number, and a special character.</li>
+              <li>Confirm the password and submit the form.</li>
+              <li>You will be taken to student setup. Your password is handled by Firebase and is never saved in Google Sheets.</li>
+            </ol>
+          </section>
+
+          <section class="auth-help-section">
+            <h3>3. Requesting class access</h3>
+            <ol>
+              <li>Enter your full name and your exact institutional seat number.</li>
+              <li>Choose your class from the available list.</li>
+              <li>Submit the access request once.</li>
+              <li>Your request appears to the teacher or CR responsible for the class.</li>
+              <li>While waiting, you can return and check the request status. A pending request cannot be duplicated for the same account.</li>
+            </ol>
+            <p class="auth-help-note"><strong>Important:</strong> your seat number is your Student ID. It is the unique value used in the Students sheet and attendance registers.</p>
+          </section>
+
+          <section class="auth-help-section">
+            <h3>4. What staff do</h3>
+            <ol>
+              <li>Sign in with the staff email already recorded in the Teachers sheet.</li>
+              <li>Review pending enrollment requests in the teacher dashboard.</li>
+              <li>Approve a request to add the student to the Students sheet and relevant subject registers, or reject it with an optional note.</li>
+              <li>Create classes, subjects, and students when needed.</li>
+              <li>Use the class and subject selectors to open the attendance register.</li>
+            </ol>
+          </section>
+
+          <section class="auth-help-section">
+            <h3>5. Marking attendance</h3>
+            <ol>
+              <li>Select a class, subject, and date.</li>
+              <li>Students start as present by default. Search by Student ID or name, then tap a row to change its status.</li>
+              <li>Use All Present or All Absent for quick changes.</li>
+              <li>Review the present and absent totals, then save.</li>
+              <li>Today’s attendance may be updated during the day. A past date can be submitted once and then becomes locked.</li>
+            </ol>
+          </section>
+
+          <section class="auth-help-section">
+            <h3>6. Viewing attendance as a student</h3>
+            <p>After approval, sign in with the same account. You will see the subjects in your class, your attendance totals, your attendance rate, and the dates on which you were present or absent. Students cannot edit attendance or view other students’ records.</p>
+          </section>
+
+          <section class="auth-help-section">
+            <h3>7. How the data is organized</h3>
+            <ul>
+              <li><strong>Students:</strong> Student ID, name, email, class, and status.</li>
+              <li><strong>Teachers:</strong> staff identity and role information.</li>
+              <li><strong>Classes:</strong> the classes available for enrollment.</li>
+              <li><strong>Subjects:</strong> subjects connected to classes and their register tabs.</li>
+              <li><strong>EnrollmentRequests:</strong> pending, approved, or rejected class requests.</li>
+              <li><strong>Subject register tabs:</strong> each subject’s students, dates, attendance marks, and totals.</li>
+            </ul>
+          </section>
+
+          <section class="auth-help-section">
+            <h3>8. Security and privacy</h3>
+            <p>Firebase verifies the signed-in identity. The backend verifies the Firebase token again before reading or changing data. Passwords never enter Google Sheets. Students only receive their own attendance data, while staff actions are checked by the backend.</p>
+          </section>
+
+          <section class="auth-help-section">
+            <h3>9. Common questions</h3>
+            <details><summary>Why can’t I see my class?</summary><p>Classes must be created and published by staff. If you already submitted a request, wait for staff approval or ask your teacher to confirm the class exists.</p></details>
+            <details><summary>Why is my request still pending?</summary><p>A teacher or CR must review it. Refresh the status from student setup, or contact the staff member responsible for your class.</p></details>
+            <details><summary>Why does a staff dashboard look empty?</summary><p>Confirm that the staff account email exists in the Teachers sheet and that the latest Apps Script deployment is active. Then refresh the page.</p></details>
+            <details><summary>What if I entered the wrong seat number?</summary><p>Ask staff to reject the request, then submit a new request with the exact seat number. Seat numbers must be unique.</p></details>
+            <details><summary>What if I forgot my password?</summary><p>Use Forgot password on the sign-in form. Firebase will send a reset link to your email.</p></details>
+          </section>
+        </div>
+
+        <div class="modern-modal-actions auth-help-actions">
+          <button type="button" class="btn btn-primary" id="auth-help-done">Close guide</button>
+        </div>
+      </section>
+    </div>
+  `;
+
+  const backdrop = root.querySelector(".auth-help-backdrop");
+  const close = () => {
+    root.innerHTML = "";
+    document.removeEventListener("keydown", onKeyDown);
+    authHelpBtn?.focus();
+  };
+  const onKeyDown = (event) => {
+    if (event.key === "Escape") close();
+  };
+  document.addEventListener("keydown", onKeyDown);
+  root.querySelector("#auth-help-close").addEventListener("click", close);
+  root.querySelector("#auth-help-done").addEventListener("click", close);
+  backdrop.addEventListener("click", (event) => {
+    if (event.target === backdrop) close();
+  });
+  root.querySelector("#auth-help-close").focus();
+}
+
+authHelpBtn?.addEventListener("click", openHelpModal);
 
 function setError(message) {
   if (!message) {
